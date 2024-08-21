@@ -1,0 +1,75 @@
+Link:https://wokwi.com/projects/406829364158154753
+Code:
+//Assignment 1:
+void setup() {
+  // put your setup code here, to run once:
+  volatile char *dir;
+  dir=0x30;
+  //setting pin as output
+  *dir=0xFF;
+}
+void LSB_LED_only(volatile char *out){
+  *out|=0x01;
+}
+void MSB_LED_only(volatile char *out){
+ *out|=(1<<7);
+}
+void LEDs(volatile char *out){
+  *out|=0xFF;
+}
+void MSB_LEDs_only(volatile char *out){
+*out|=(1<<6)|(1<<7);
+}
+void LSB_LEDs_only(volatile char *out){
+  *out|=0x0F;
+}
+void ODD(volatile char *out){
+  *out|=0xAA;
+}
+void EVEN(volatile char *out){
+  *out|=~(0xAA);
+}
+void few(volatile char *out){
+  *out|=(1<<7)|(1<<4)|(1<<3)|(1<<1);
+}
+void loop() {
+  // put your main code here, to run repeatedly:
+  volatile char *out;
+  out=0x31;
+  //odd+even
+  //*out|=0xAA;even places
+//*out|=0xFF-(0xAA);odd places
+//*out|=0xFF-0x3F;
+//*out|=0x9A;
+uint64_t value=0;
+value=8;
+switch(value){
+  case 1:
+  LSB_LED_only(out);
+  break;
+  case 2:
+  MSB_LED_only(out);
+  break;
+  case 3:
+  LEDs(out);
+  break;
+  case 4:
+  MSB_LEDs_only(out);
+  break;
+  case 5:
+  LSB_LEDs_only(out);
+  break;
+  case 6:
+  ODD(out);
+  break;
+  case 7:
+  EVEN(out);
+  break;
+  case 8:
+  few(out);
+  break;
+  default:
+  break;
+}
+}
+
