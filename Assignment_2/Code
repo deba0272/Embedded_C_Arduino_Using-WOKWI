@@ -1,0 +1,101 @@
+Link:https://wokwi.com/projects/406847906340885505
+Code:
+void setup() {
+// put your setup code here, to run once:
+volatile char *dir;
+dir=0x107;
+*dir|=0xFF;//set to output pin
+}
+void Blink_all_the_LEDs_with_delay(volatile char *out){
+unsigned long i;
+*out|=0xFF;
+delay(500);
+*out&=~0xFF;
+delay(500);
+}
+void LEDs_one_by_one_not_off(volatile char *out){
+  unsigned int i;
+  for(i=0;i<=7;i++){
+    *out|=(1<<i);
+    delay(500);
+  }
+}
+void LEDs_one_by_one(volatile char *out){
+  unsigned int j;
+  for(j=0;j<8;j++){
+    *out=(1<<j);
+    delay(500);
+  }
+}
+void LEDs_one_by_one_not_off_odd(volatile char *out){
+  unsigned int k;
+  for(k=0;k<8;k++){
+    if(k%2!=0){
+      *out|=(1<<k);
+    }
+  }
+}
+void LEDs_O(volatile char *out){
+  unsigned int k;
+  for(k=0;k<=3;k++){
+    *out=(1<<k);
+    delay(500);
+}
+}
+void LEDs_Q(volatile char *out){
+   unsigned int k;
+  for(k=4;k<=7;k++){
+    *out=(1<<k);
+    delay(500);
+}
+}
+void LEDs_P(volatile char *out){
+   unsigned int k;
+  for(k=7;k>=4;k--){
+    *out=(1<<k);
+    delay(500);
+}
+}
+void LEDs_one_by_one_not_off_even(volatile char *out){
+  unsigned int k;
+  for(k=0;k<8;k++){
+    if(k%2==0){
+      *out|=(1<<k);
+    }
+  }
+}
+void loop() {
+  // put your main code here, to run repeatedly:
+  volatile char *out;
+  out=0x108;
+  unsigned int value=0;
+  value=8;
+  switch(value){
+    case 1:
+    Blink_all_the_LEDs_with_delay(out);
+    break;
+    case 2:
+    LEDs_one_by_one_not_off(out);
+    break;
+    case 3:
+    LEDs_one_by_one(out);
+    break;
+    case 4:
+    LEDs_one_by_one_not_off_odd(out);
+    break;
+    case 5:
+    LEDs_one_by_one_not_off_even(out);
+    break;
+    case 6:
+    LEDs_O(out);
+    break;
+    case 7:
+    LEDs_P(out);
+    break;
+    case 8:
+    LEDs_Q(out);
+    break;
+    default:
+    break;
+  }
+}
