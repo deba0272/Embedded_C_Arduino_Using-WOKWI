@@ -1,0 +1,282 @@
+Link:https://wokwi.com/projects/406865026451990529
+Code:
+int oldValue=0;
+int lastButtonState = 0;
+int value=0;
+void setup() {
+// put your setup code here, to run once:
+Serial.begin(9600);
+volatile char *ddir;
+ddir=0x30;
+*ddir&=~(1<<DDF0);//setting it as input pin
+volatile char *dir;
+dir=0x21;
+*dir=0xFF;
+}
+void one(volatile char *out){
+  unsigned char digits[]={
+  0x3F, // 0
+  0x06, // 1
+  0x5B, // 2
+  0x4F, // 3
+  0x66, // 4
+  0x6D, // 5
+  0x7D, // 6
+  0x07, // 7
+  0x7F, // 8
+  0x6F  // 9
+  };
+  unsigned int bite;
+  for(bite=0;bite<10;bite++){
+  *out=digits[bite];
+  delay(1000);
+  }
+}
+void two(volatile char *out){
+   unsigned char digits_with_dp[] = {
+    0xBF, // 0 with DP
+    0x86, // 1 with DP
+    0xDB, // 2 with DP
+    0xCF, // 3 with DP
+    0xE6, // 4 with DP
+    0xED, // 5 with DP
+    0xFD, // 6 with DP
+    0x87, // 7 with DP
+    0xFF, // 8 with DP
+    0xEF  // 9 with DP
+  };
+  for (unsigned int bite=0;bite<10;bite++) {
+    *out = digits_with_dp[bite];
+    delay(1000);
+  }
+}
+void three(volatile char *out){
+  unsigned char digits[]={
+  0x3F, // 0
+  0x06, // 1
+  0x5B, // 2
+  0x4F, // 3
+  0x66, // 4
+  0x6D, // 5
+  0x7D, // 6
+  0x07, // 7
+  0x7F, // 8
+  0x6F  // 9
+  };
+  unsigned int i;
+  for(i=0;i<10;i++){
+    if(i%2==0){
+      *out=digits[i];
+      delay(1000);
+    }
+  }
+}
+void four(volatile char *out){
+  unsigned char digits[]={
+  0x3F, // 0
+  0x06, // 1
+  0x5B, // 2
+  0x4F, // 3
+  0x66, // 4
+  0x6D, // 5
+  0x7D, // 6
+  0x07, // 7
+  0x7F, // 8
+  0x6F  // 9
+  };
+  unsigned int i;
+  for(i=0;i<10;i++){
+    if(i%2!=0){
+      *out=digits[i];
+      delay(1000);
+    }
+  }
+}
+void five(volatile char *out){
+  unsigned char alphabet[] = {
+    0x77, // A
+    0x7C, // b
+    0x39, // C
+    0x5E, // d
+    0x79, // E
+    0x71, // F
+    0x3D, // G
+    0x76, // H
+    0x06, // I
+    0x0E, // J
+    0x38, // L
+    0x54, // n
+    0x3F, // O
+    0x73, // P
+    0x67, // q
+    0x50, // r
+    0x6D, // S
+    0x78, // t
+    0x3E, // U
+    0x6E, // Y
+    0x5B  // Z
+  };
+  unsigned int i;
+  for(i= 0;i<sizeof(alphabet);i++) {
+    *out=alphabet[i];
+    delay(1000);
+  }
+}
+void six(volatile char *out){
+  unsigned char digits[]={
+  0x3F, // 0
+  0x06, // 1
+  0x5B, // 2
+  0x4F, // 3
+  0x66, // 4
+  0x6D, // 5
+  0x7D, // 6
+  0x07, // 7
+  0x7F, // 8
+  0x6F  // 9
+  };
+  unsigned int bite,j;
+  volatile int c;
+  for(bite=2;bite<10;bite++){
+    c=0;
+    for(j=2;j<bite;j++){
+    if(bite%j==0){
+    c++;
+    break;
+    }
+    }
+    if(c==0)
+    {
+      *out=digits[bite];
+        delay(500);
+    }
+}
+}
+void seven(volatile char *out){
+  unsigned char values[]={
+  0x3F, // 0
+  0x06, // 1
+  0x5B, // 2
+  0x4F, // 3
+  0x66, // 4
+  0x6D, // 5
+  0x7D, // 6
+  0x07, // 7
+  0x7F, // 8
+  0x6F  // 9
+  };
+  unsigned int i,dig;
+  unsigned int digit=192;
+    dig=digit%10;
+        *out=values[dig];
+}
+void eight(volatile char *out){
+  unsigned char values[]={
+  0x3F, // 0
+  0x06, // 1
+  0x5B, // 2
+  0x4F, // 3
+  0x66, // 4
+  0x6D, // 5
+  0x7D, // 6
+  0x07, // 7
+  0x7F, // 8
+  0x6F  // 9
+  };
+  unsigned int i,dig;
+  unsigned int digit=9932;
+    while(digit!=0){
+      dig=digit%10;
+      digit=digit/10;
+    }
+    *out=values[dig];
+    }
+  void nine(volatile char *out){
+    unsigned char values[]={
+  0x3F, // 0
+  0x06, // 1
+  0x5B, // 2
+  0x4F, // 3
+  0x66, // 4
+  0x6D, // 5
+  0x7D, // 6
+  0x07, // 7
+  0x7F, // 8
+  0x6F  // 9
+  };
+  *out=values[0];
+  delay(500);
+  *out=values[2];
+  delay(500);
+  *out=values[4];
+  delay(500);
+  *out=values[6];
+  delay(500);
+  *out=values[8];
+  delay(500);
+  *out=values[9];
+  delay(500);
+  *out=values[7];
+  delay(500);
+  *out=values[5];
+  delay(500);
+  *out=values[3];
+  delay(500);
+  *out=values[1];
+  delay(500);
+  }
+void loop() {
+// put your main code here, to run repeatedly:
+ volatile char *buto;
+ buto=0x2F;
+ *buto=~0xFF;//setting to 0
+ int buttonState=(*buto&(1<<PINF0));//reading from pinA0
+    if (buttonState!=oldValue){
+      oldValue=buttonState;
+      if (oldValue==1){
+        Serial.println("The button pressed is:");
+        value++;
+        Serial.println(value);
+        if(value>=9) {
+          value=1;
+        }
+        volatile char *out;
+        out = 0x22;
+switch(value){
+  case 1:
+  one(out);
+  break;
+  case 2:
+  two(out);
+  break;
+  case 3:
+  three(out);
+  break;
+  case 4:
+  four(out);
+  break;
+  case 5:
+  five(out);
+  break;
+  case 6:
+  six(out);
+  break;
+  case 7:
+  seven(out);
+  break;
+  case 8:
+  eight(out);
+  break;
+  case 9:
+  nine(out);
+  break;
+  default:
+  break;
+}
+}
+else {
+      Serial.println("The button is released.");
+    }
+  }
+lastButtonState = buttonState;
+}
