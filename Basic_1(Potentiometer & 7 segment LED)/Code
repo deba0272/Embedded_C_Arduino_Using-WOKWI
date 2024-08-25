@@ -1,0 +1,51 @@
+Link:https://wokwi.com/projects/407162448635036673
+Code:
+void setup() {
+  // Setup code
+  volatile char *dir;
+  dir=0x21;
+  *dir=0xFF;
+  volatile char *ddir;
+  ddir=0x107;
+  *ddir=0xFF;
+  volatile char *dudir;
+  dudir=0x30;
+  *dudir=0x00; // Setting it to be an input pin
+  ADCSRA |=(1<<ADEN);// Enable ADC
+  ADMUX=(1<<REFS0);//Here Vref is 5v
+ // ADMUX=(1<<REFS1);  //(Here Vref is 1.1v:Interrnal Voltage) Setting reference voltage to AVcc for comparison and to establich a limit
+}
+void loop() {
+  unsigned char digits[]={
+    0x3F, // 0
+    0x06, // 1
+    0x5B, // 2
+    0x4F, // 3
+    0x66, // 4
+    0x6D, // 5
+    0x7D, // 6
+    0x07, // 7
+    0x7F, // 8
+    0x6F  // 9
+  };
+  ADMUX &=0xF0;//
+  //1010 1101  (Original ADMUX value)
+  //1111 0000  (0xF0 mask)
+  //----------
+  //1010 0000  (after AND operation)
+  ADMUX |=(1<<MUX0); //selecting A1 pin
+  ADCSRA |=(1<<ADSC);// Start ADC conversion
+  while(ADCSRA&(1<<ADSC)); //conversion to complete and after that reset
+  unsigned int analogValue=ADC;
+  unsigned int mappedValue=map(analogValue,0,1023,0,9);
+  volatile char *outo;
+  outo=0x31;
+  *outo=mappedValue;
+  volatile char *buto;
+  buto=0x20;
+  *buto=0x10;
+  volatile char *out;
+  out=0x108;
+  *out = digits[*outo];
+}
+
