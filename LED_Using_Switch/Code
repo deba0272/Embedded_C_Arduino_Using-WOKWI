@@ -1,0 +1,25 @@
+Link:https://wokwi.com/projects/407377804422368257
+Code:
+//#define sw 0
+//#define led 0
+void setup() {
+  // put your setup code here, to run once:
+DDRA|=(1<<PA0);
+DDRF&=~(1<<PF0);
+DDRF|=(1<<PF1);
+PORTF|=(1<<PF0);//pull up resistor
+}
+void loop(){
+while(1){
+  if(PINF &(1<<PF0)){
+    PORTA|=(1<<PA0);
+    PORTF|=(1<<PF1);
+    //delay(500);
+  }
+  else{
+    PORTA&=~(1<<PA0);
+    PORTF&=~(1<<PF1);
+    //delay(500);
+  }
+}
+}
