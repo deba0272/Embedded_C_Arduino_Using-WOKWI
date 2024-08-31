@@ -1,0 +1,20 @@
+Link:https://wokwi.com/projects/407746307480604673
+Code:
+void setup() {
+  // put your setup code here, to run once:
+DDRH|=(1<<PH3);//setting output pin
+DDRF&=~(1<<PF0);//setting input pin for potentiometer
+TCCR4A |=(1<<WGM40)|(1<<WGM41); // Fast PWM
+TCCR4A |=(1<<COM4A1);  // Non-inverting mode for PWM
+TCCR4B |=(1<<CS41);  // Prescaler of 8 
+}
+void loop() {
+  // put your main code here, to run repeatedly:
+ADCSRB|=(1<<ACME);
+ADMUX=1;//choosing A1 pin
+ADCSRA|=(1<<ADSC);
+while(ADCSRA&(1<<ADSC));
+unsigned int value=ADC;
+unsigned int mappedvalue=map(value,0,1023,0,255);
+OCR4A=mappedvalue;
+}
