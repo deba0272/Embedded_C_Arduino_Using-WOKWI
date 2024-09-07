@@ -1,0 +1,81 @@
+Linkhttps://www.tinkercad.com/things/6nbUkwEdz6F-uart/editel?returnTo=%2Fthings%2F6nbUkwEdz6F-uart&sharecode=6ROImpoxPDTTOSyTniBg_QYbZi0bF6n-iF1usfI5VN8
+Transmitter:
+void setup()
+{
+  DDRC|=0xFF;
+  DDRB|=0xFF;
+  UART_INIT();
+}
+void UART_INIT(){
+  unsigned int UBRR=103;
+  UBRR0H=(unsigned char)(UBRR>>8);
+  UBRR0L=(unsigned char)UBRR;
+  UCSR0B=(1<<RXEN0)|(1<<TXEN0);
+  UCSR0C=(1<<UCSZ01)|(1<<UCSZ00);
+}
+void UART_TRANSMIT(unsigned char data){
+  while(!UCSR0A&(1<<UDRE0));
+  UDR0=data;
+}
+void loop(){
+  unsigned char digits[]={
+    0x3F, // 0
+    0x06, // 1
+    0x5B, // 2
+    0x4F, // 3
+    0x66, // 4
+    0x6D, // 5
+    0x7D, // 6
+    0x07, // 7
+    0x7F, // 8
+    0x6F  // 9
+  };
+PORTB|=digits[5];
+  PORTC|=digits[5];
+    UART_TRANSMIT('5'); 
+  delay(500);
+}
+
+
+Reciever:
+// C++ code
+//
+void setup() {
+  DDRC |= 0xFF;
+  DDRB |= 0xFF;
+  UART_INIT();
+}
+void UART_INIT() {
+  unsigned int UBRR = 103;//baud rate = 9600
+  UBRR0H = (unsigned char)(UBRR >> 8);
+  UBRR0L = (unsigned char)UBRR;   
+  UCSR0B = (1 << RXEN0) | (1 << TXEN0); // Enable both RX and TX
+  UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); // Set frame format: 8 data bits, 1 stop bit
+}
+unsigned char UART_RECEIVE() {
+  // Wait for data to be received
+  while (!(UCSR0A & (1 << RXC0)));
+  return UDR0;
+}
+void displayDigit(unsigned char digit) {
+  unsigned char digits[] = {
+    0x3F, // 0
+    0x06, // 1
+    0x5B, // 2
+    0x4F, // 3
+    0x66, // 4
+    0x6D, // 5
+    0x7D, // 6
+    0x07, // 7
+    0x7F, // 8
+    0x6F  // 9
+  };
+  //converts into integer
+  PORTB = digits[digit-'0'];
+  PORTC = digits[digit-'0'];
+}
+void loop() {
+  // Receive the digit sent from Arduino 1
+  unsigned char receivedData = UART_RECEIVE();
+  displayDigit(receivedData);
+}
