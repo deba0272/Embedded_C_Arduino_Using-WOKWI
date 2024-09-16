@@ -1,0 +1,42 @@
+Link:https://wokwi.com/projects/409195990509696001
+Code:
+void setup() {
+  Serial.begin(9600);
+  DDRA |= 0xFF;
+  DDRK |= 0x00; 
+  DDRF |= 0xFF;
+}
+void loop() {
+  unsigned char digits[] = {
+    0x3F, // 0
+    0x06, // 1
+    0x5B, // 2
+    0x4F, // 3
+    0x66, // 4
+    0x6D, // 5
+    0x7D, // 6
+    0x07, // 7
+    0x7F, // 8
+    0x6F  // 9
+  };
+  int keymap[3][3]={
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+  };
+  unsigned int row,col;
+  for(row = 0; row < 3; row++) {
+    PORTF =(1<<row);
+    for(col = 0; col < 3; col++) {
+      if (PINK & (1 << col)) {
+        int numPressed = keymap[row][col];
+        if (numPressed < 10) {
+          PORTA = digits[numPressed];
+          Serial.println(numPressed);
+          delay(500);
+        }
+      }
+    }
+  }
+}
+
