@@ -19,18 +19,19 @@ void loop() {
     0x7F, // 8
     0x6F  // 9
   };
-  int keymap[3][3]={
+  int keymap[4][3]={
     {1, 2, 3},
     {4, 5, 6},
-    {7, 8, 9}
+    {7, 8, 9},
+    {-1, 0, -1}
   };
   unsigned int row,col;
-  for(row = 0; row < 3; row++) {
+  for(row = 0; row < 4; row++) {
     PORTF =(1<<row);
     for(col = 0; col < 3; col++) {
       if (PINK & (1 << col)) {
         int numPressed = keymap[row][col];
-        if (numPressed < 10) {
+        if (numPressed>=0) {
           PORTA = digits[numPressed];
           Serial.println(numPressed);
           delay(500);
@@ -39,4 +40,3 @@ void loop() {
     }
   }
 }
-
