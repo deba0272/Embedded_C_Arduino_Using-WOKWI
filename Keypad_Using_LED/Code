@@ -1,0 +1,29 @@
+Link:
+Code:
+void setup() {
+  // put your setup code here, to run once:
+DDRF|=0xFF;//setting row to output
+DDRK|=0x00;//setting colum to input
+DDRA|=0xFF;//setting led pins output
+DDRC|=0xFF;
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  volatile char *pin,x;
+  pin=0x106;
+  volatile char *outa;
+  outa=0x22;
+  volatile long i,j;
+  while(1){
+  for(i=0;i<4;i++){
+    PORTF=(1<<i);
+    *outa=*pin;
+    if(*pin!=0){
+    PORTC=(1<<i);
+    for(j=0;j<100000;j++);
+    PORTC=0;
+    }
+  }
+  }
+}
